@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+# This function tries to retrieve the current script directory.
+# Case this script is a symlink, it will try to resolve it. If
+# the script is a relative symlink it will resolve it relative
+# to the symlink base directory.
+# USAGE: bashunit.get_current_script_dir
+# RETURN: string
+function bashunit.get_current_script_dir()
+{
+	local src="${BASH_SOURCE[0]}"
+	local dir
+
+	# While $src is a symlink, resolve it
+	while [ -h "$src" ]; do
+	  dir="$( cd -P "$( dirname "$src" )" && pwd )"
+	  src="$( readlink "$src" )"
+
+	  # relative symlink
+	  [[ $src != /* ]] && src="$dir/$src"
+	done
+	dir="$( cd -P "$( dirname "$src" )" && pwd )"
+	echo "$dir"
+}
+
+curr_script_dir="$(bashunit.get_current_script_dir)"
+source "${curr_script_dir}/lib/bootstrap.sh"
+cat "${curr_script_dir}/.logo"
+
+# usage
+if [ $# -eq 0 ]; then
+	printf "\nusage: $0 <target_dir|target_file> [<source_dir> [list]] [--bootstrap=</path/to/file>]\n\n"
+	exit 1
+fi
+
+echo
+
+# handle arguments
+declare -a args=("$@")
+for ((i=0; i<${#args[*]}; i++)); do
+	case "${args[i]}" in
+		"--bootstrap"* )
+			file="${args[i]//--bootstrap=/}"
+			bootstrap_file="$(bashunit.utils.absolutepath $file 2>/dev/null)"
+			if [ $? -ne 0 ]; then
+				bashunit.utils.exit_with_msg "bootstrap file '$file' does not exist!"
+			fi
+			# remove argument from list
+			args=( "${args[@]:0:i}" "${args[@]:$(expr $i + 1)}" )
+			break
+			;;
+	esac
+done
+
+# load bootstrap file
+if [ -n "$bootstrap_file" ]; then
+	source "$bootstrap_file"
+fi
+
+# show coverage
+if [ -n "${args[1]}" ]; then
+	show_list=0
+	source_dir=$(bashunit.utils.absolutepath ${args[1]})
+	if [ $? -ne 0 ]; then
+		bashunit.utils.exit_with_msg "source directory '$source_dir' does not exist!"
+	fi
+	if [ -n "${args[2]}" ]; then
+		show_list=1
+	fi
+	bashunit.test.show_coverage $source_dir ${args[0]} $show_list
+fi
+
+# run suite
+bashunit.test.run_suite "${args[0]}"
+duration=$SECONDS
+bashunit.utils.print_info "Time: $((duration / 60)) minutes and $((duration % 60)) seconds elapsed."
