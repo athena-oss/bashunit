@@ -1,4 +1,4 @@
-# bashUnit
+# bashUnit [![Build Status](https://travis-ci.org/athena-oss/bashunit.svg?branch=master)](https://travis-ci.org/athena-oss/bashunit)
 
 bashUnit is a testing framework for bash and has support for :
 
