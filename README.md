@@ -121,13 +121,13 @@ The bootstrap_file is usually where you source/load your scripts in order to be 
 ### Example: Running bashUnit testcases
 
 ```bash
-$ ./bashunit tests/
+$ ./bashunit test/
 ```
 
 ### Example: Successful run
 
 ```bash
-$ ./bashunit test
+$ ./bashunit test/
 ```
 ![image](docs/img/success_run.png)
 
@@ -135,6 +135,6 @@ $ ./bashunit test
 
 
 ```bash
-$ ./bashunit test
+$ ./bashunit test/
 ```
 ![image](docs/img/failed_run.png)
