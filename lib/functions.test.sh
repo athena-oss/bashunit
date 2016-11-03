@@ -1,4 +1,4 @@
-BUNIT_MOCK_PREFIX="BUNIT_MOCK_"
+BASHUNIT_MOCK_PREFIX="BASHUNIT_MOCK_"
 
 # This function outputs the coverage for the given source and tests directory. It is
 # also possible to output the list of functions that don't have tests for it.
@@ -15,7 +15,7 @@ function bashunit.test.show_coverage()
 	local count=0
 	local nr_funcs=0
 	local coverage
-	for line in $(grep -R "^function bashunit." "$1" | grep -v bashunit.test. | grep -v "\._" | awk '{ print $1":"$2 }' | sed -e 's#()##g')
+	for line in $(grep -R "^function " "$1" | grep -v bashunit.test. | grep -v "\._" | awk '{ print $1":"$2 }' | sed -e 's#()##g')
 	do
 		file=$(echo "$line" | awk -F':' '{ print $1 }')
 		func=$(echo "$line" | awk -F':' '{ print $3 }')
@@ -213,7 +213,7 @@ function bashunit.test.assert_exit_code.expects_fail()
 }
 
 # This function mocks and existing function by overriding it.
-# Also it saves the function to be mocked as BUNIT_MOCK_<func_name>,
+# Also it saves the function to be mocked as BASHUNIT_MOCK_<func_name>,
 # so that it can be restored afterwards by callin bashunit.test.unmock.
 # USAGE: bashunit.test.mock <function_name> <mock_function_name>
 # RETURN: --
@@ -260,7 +260,7 @@ function bashunit.test._override_function()
 # RETURN: --
 function bashunit.test.unmock()
 {
-	local name="${BUNIT_MOCK_PREFIX}$1"
+	local name="${BASHUNIT_MOCK_PREFIX}$1"
 	if bashunit.test._override_function "$1" "$name" ; then
 		unset -f "$name"
 	fi
@@ -296,7 +296,7 @@ function bashunit.test.mock.exits()
 # internal functions
 function bashunit.test._save_mock()
 {
-	local save_name="${BUNIT_MOCK_PREFIX}$1"
+	local save_name="${BASHUNIT_MOCK_PREFIX}$1"
 	if ! bashunit.utils.function_exists "$save_name" ; then
 		bashunit.test._override_function "$save_name" "$1"
 	fi
@@ -545,9 +545,9 @@ function bashunit.test._clear_mocks()
 {
 	local functions
 	local mocked_function
-	functions=$(declare -F | grep "$BUNIT_MOCK_PREFIX")
+	functions=$(declare -F | grep "$BASHUNIT_MOCK_PREFIX")
 	for mock in $functions; do
-		mocked_function=$(echo "$mock" | sed -n -e "s/.*${BUNIT_MOCK_PREFIX}\(.*\)/\1/p")
+		mocked_function=$(echo "$mock" | sed -n -e "s/.*${BASHUNIT_MOCK_PREFIX}\(.*\)/\1/p")
 		if [ -n "$mocked_function" ]; then
 			bashunit.test.unmock "$mocked_function"
 		fi
@@ -557,9 +557,9 @@ function bashunit.test._clear_mocks()
 function bashunit.test._save_state()
 {
 	local var
-	for var in ${!BUNIT_@}
+	for var in ${!BASHUNIT_@}
 	do
-		if [[ ! $var =~ BUNIT_MOCK* ]]; then
+		if [[ ! $var =~ BASHUNIT_MOCK* ]]; then
 			export SAVE_$var="${!var}"
 		fi
 	done
@@ -568,9 +568,9 @@ function bashunit.test._save_state()
 function bashunit.test._restore_state()
 {
 	local var
-	for var in ${!SAVE_BUNIT_@}
+	for var in ${!SAVE_BASHUNIT_@}
 	do
-		if [[ ! $var =~ BUNIT_MOCK* ]]; then
+		if [[ ! $var =~ BASHUNIT_MOCK* ]]; then
 			export ${var/SAVE_/}="${!var}"
 		fi
 	done
