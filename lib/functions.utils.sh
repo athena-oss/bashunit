@@ -180,7 +180,8 @@ function bashunit.utils.override_exit_handler()
 	bashunit.utils.print_info "System traps are now disabled."
 	local signals
 	# unset the previous traps
-	bashunit.utils._trap - EXIT QUIT ABRT INT TERM ERR KILL STOP HUP
+	signals="EXIT QUIT ABRT INT TERM ERR KILL STOP HUP"
+	bashunit.utils._trap - $signals
 	bashunit.utils.register_exit_handler "$1" $signals
 }
 
