@@ -138,3 +138,18 @@ $ ./bashunit test/
 $ ./bashunit test/
 ```
 ![image](docs/img/failed_run.png)
+
+## Quick start
+
+Prerequisites
+ * You have a `bash` shell.
+
+There are three quick start options available:
+
+* On MAC OSX using [Homebrew](http://brew.sh/) :
+```bash
+$ brew tap athena-oss/tap
+$ brew install bashunit
+```
+* [Download the latest release](https://github.com/athena-oss/bashunit/releases/latest)
+* Clone the repo: `git clone https://github.com/athena-oss/bashunit.git`
