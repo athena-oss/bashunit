@@ -51,11 +51,6 @@ for ((i=0; i<${#args[*]}; i++)); do
 	esac
 done
 
-# load bootstrap file
-if [ -n "$bootstrap_file" ]; then
-	source "$bootstrap_file"
-fi
-
 # show coverage
 if [ -n "${args[1]}" ]; then
 	show_list=0
@@ -69,7 +64,17 @@ if [ -n "${args[1]}" ]; then
 	bashunit.test.show_coverage $source_dir ${args[0]} $show_list
 fi
 
+BASHUNIT_TESTS_DIR=$(bashunit.utils.absolutepath "${args[0]}")
+
+# load bootstrap file
+if [ -n "$bootstrap_file" ]; then
+	source "$bootstrap_file"
+elif [ -f "$BASHUNIT_TESTS_DIR/bashunit-bootstrap.sh" ]; then
+	bashunit.utils.print_info "Using bootstrap file in '$BASHUNIT_TESTS_DIR/bashunit-bootstrap.sh'"
+	source "$BASHUNIT_TESTS_DIR/bashunit-bootstrap.sh"
+fi
+
 # run suite
-bashunit.test.run_suite "${args[0]}"
+bashunit.test.run_suite "$BASHUNIT_TESTS_DIR"
 duration=$SECONDS
 bashunit.utils.print_info "Time: $((duration / 60)) minutes and $((duration % 60)) seconds elapsed."
