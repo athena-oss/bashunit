@@ -65,6 +65,11 @@ if [ -n "${args[1]}" ]; then
 fi
 
 BASHUNIT_TESTS_DIR=$(bashunit.utils.absolutepath "${args[0]}")
+target=$BASHUNIT_TESTS_DIR
+if [ -f $BASHUNIT_TESTS_DIR ]; then
+	target="$BASHUNIT_TESTS_DIR"
+	BASHUNIT_TESTS_DIR=$(dirname $BASHUNIT_TESTS_DIR)
+fi
 
 # load bootstrap file
 if [ -n "$bootstrap_file" ]; then
@@ -75,6 +80,6 @@ elif [ -f "$BASHUNIT_TESTS_DIR/bashunit-bootstrap.sh" ]; then
 fi
 
 # run suite
-bashunit.test.run_suite "$BASHUNIT_TESTS_DIR"
+bashunit.test.run_suite "$target"
 duration=$SECONDS
 bashunit.utils.print_info "Time: $((duration / 60)) minutes and $((duration % 60)) seconds elapsed."
