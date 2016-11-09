@@ -170,3 +170,17 @@ $ brew install bashunit
 ```
 * [Download the latest release](https://github.com/athena-oss/bashunit/releases/latest)
 * Clone the repo: `git clone https://github.com/athena-oss/bashunit.git`
+
+## Contributing
+
+Checkout our guidelines on how to contribute in [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Versioning
+
+Releases are managed using github's release feature. We use [Semantic Versioning](http://semver.org) for all
+the releases. Every change made to the code base will be referred to in the release notes (except for
+cleanups and refactorings).
+
+## License
+
+Licensed under the [Apache License Version 2.0 (APLv2)](LICENSE).
