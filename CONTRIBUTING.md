@@ -17,7 +17,7 @@ The core contributors will be monitoring for pull requests. When we get one, we 
 1. Fork the repo and create your branch from `master`.
 2. If you've added code that should be tested, add tests!
 3. If you've changed APIs, update the documentation.
-4. Ensure the test suite passes (`bashunit cli tests`).
+4. Ensure the test suite passes (`bashunit test`).
 
 
 ## Bugs
