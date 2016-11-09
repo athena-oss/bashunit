@@ -31,6 +31,12 @@ function bashunit.test.show_coverage()
 	if [ "$show" -eq 1 ] && [ "$count" -gt 0 ]; then
 		bashunit.utils.print_warn "There are still '$count/$nr_funcs' untested functions." 1>&2
 	fi
+
+	if [ $nr_funcs -eq 0 ]; then
+		bashunit.utils.print_warn "No source functions were found in '$1'."
+		return 1
+	fi
+
 	let coverage=$((count*100/nr_funcs))
 	let coverage=100-coverage
 	if [ "$coverage" -eq 100 ]; then
