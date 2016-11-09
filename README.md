@@ -11,6 +11,7 @@ bashUnit is a testing framework for bash and has support for :
   * arrays
 * Mocking
 * Handling temporary files/directories
+* Code Coverage (approximate coverage)
 
 For the full API, please have a look at the functions in the scripts inside the lib directory and/or have a look at real testcases that use bashUnit to execute them.
 
@@ -112,11 +113,25 @@ tmpfile=$(bashunit.test.create_tempfile)
 
 ## Executing the Testsuites
 ```bash
-$ ./bashunit <target_dir|target_file> [<bootstrap_file>]
+$ bashunit <target_dir|target_file> [<source_dir> [list]] [--bootstrap=</path/to/file>]
 ```
 
-**Note:**
-The bootstrap_file is usually where you source/load your scripts in order to be able to use them in the tests.
+**Notes:**
+* The `<source_dir>` is used to calculate approximate code coverage by checking if functions in source_dir contain testcases for it, e.g.:
+	````bash
+	function my_function() {
+		...
+	}
+	```
+	must have a testcase with the following name
+	```bash
+	function testcase_my_function() {
+		...
+	}
+	```
+
+* The `list` parameter is used to show which functions are not being tested
+* The `bootstrap_file` is used to source/load your scripts in order to be able to use them in the tests. If this flag is not specified then `bashUnit` will look for a file called `bashunit-bootstrap.sh` inside the tests directory.
 
 ### Example: Running bashUnit testcases
 
