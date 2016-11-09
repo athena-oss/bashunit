@@ -2,16 +2,16 @@
 
 bashUnit is a testing framework for bash and has support for :
 
-* Assertions on :
-  * return codes
-  * exit codes
-  * outputs
-  * values
-  * strings
-  * arrays
-* Mocking
-* Handling temporary files/directories
-* Code Coverage (approximate coverage)
+* [Assertions](#assertions) on :
+  * [return codes](#return)
+  * [exit codes](#exit-code)
+  * [outputs](#output)
+  * [values](#values)
+  * [strings](#string)
+  * [arrays](#array)
+* [Mocking](#mocking)
+* [Handling temporary files/directories](#other-useful-features)
+* [Code Coverage](#code-coverage) (approximate coverage)
 
 For the full API, please have a look at the functions in the scripts inside the lib directory and/or have a look at real testcases that use bashUnit to execute them.
 
@@ -117,21 +117,8 @@ $ bashunit <target_dir|target_file> [<source_dir> [list]] [--bootstrap=</path/to
 ```
 
 **Notes:**
-* The `<source_dir>` is used to calculate approximate code coverage by checking if functions in source_dir contain testcases for it, e.g.:
-	````bash
-	function my_function() {
-		...
-	}
-	```
-	must have a testcase with the following name
-	```bash
-	function testcase_my_function() {
-		...
-	}
-	```
-
-* The `list` parameter is used to show which functions are not being tested
 * The `bootstrap_file` is used to source/load your scripts in order to be able to use them in the tests. If this flag is not specified then `bashUnit` will look for a file called `bashunit-bootstrap.sh` inside the tests directory.
+
 
 ### Example: Running bashUnit testcases
 
@@ -148,11 +135,26 @@ $ ./bashunit test/
 
 ### Example: Run with some errors
 
-
 ```bash
 $ ./bashunit test/
 ```
 ![image](docs/img/failed_run.png)
+
+## Code Coverage
+* The `<source_dir>` is used to calculate approximate code coverage by checking if functions in source_dir contain testcases for it, e.g.:
+	````bash
+	function my_function() {
+		...
+	}
+	```
+	must have a testcase with the following name
+	```bash
+	function testcase_my_function() {
+		...
+	}
+	```
+
+* The `list` parameter is used to show which functions are not being tested
 
 ## Quick start
 
