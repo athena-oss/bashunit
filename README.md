@@ -2,7 +2,7 @@
 
 bashUnit is a testing framework for bash and has support for :
 
-* [Assertions](#assertions) on :
+* [Assertions](#assertions) :
   * [return codes](#return)
   * [exit codes](#exit-code)
   * [outputs](#output)
