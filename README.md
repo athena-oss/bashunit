@@ -140,6 +140,13 @@ $ ./bashunit test/
 ```
 ![image](docs/img/failed_run.png)
 
+As you can see from the picture, the output gives you information about the :
+
+* **file** where the error occurred
+* **testcase** where it happened
+* **line** where it happened
+* **expected** result and **actual** result
+
 ## Code Coverage
 * The `<source_dir>` is used to calculate approximate code coverage by checking if functions in source_dir contain testcases for it, e.g.:
 	````bash
