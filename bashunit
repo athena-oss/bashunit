@@ -81,5 +81,7 @@ fi
 
 # run suite
 bashunit.test.run_suite "$target"
+exit_code=$?
 duration=$SECONDS
 bashunit.utils.print_info "Time: $((duration / 60)) minutes and $((duration % 60)) seconds elapsed."
+exit $exit_code
