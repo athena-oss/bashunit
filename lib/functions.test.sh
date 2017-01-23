@@ -94,13 +94,10 @@ function bashunit.test.run_suite()
 	bashunit.utils.dir_exists_or_fail "$target"
 	bashunit.test._start_suite
 
-	local old_ifs="$IFS"
-	IFS=$'\n'
-	for test_suite in $(find "$target" -name "test.*sh")
+	while read test_suite
 	do
 		bashunit.test._run_test_case "$test_suite"
-	done
-	IFS="$old_ifs"
+	done < <(find "$target" -name "test.*sh")
 
 	bashunit.test._end_suite
 	return $?
