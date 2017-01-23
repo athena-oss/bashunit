@@ -16,7 +16,7 @@ function bashunit.get_current_script_dir()
 	  src="$( readlink "$src" )"
 
 	  # relative symlink
-	  [[ $src != /* ]] && src="$dir/$src"
+	  [[ "$src" != /* ]] && src="$dir/$src"
 	done
 	dir="$( cd -P "$( dirname "$src" )" && pwd )"
 	echo "$dir"
@@ -40,7 +40,7 @@ for ((i=0; i<${#args[*]}; i++)); do
 	case "${args[i]}" in
 		"--bootstrap"* )
 			file="${args[i]//--bootstrap=/}"
-			bootstrap_file="$(bashunit.utils.absolutepath $file 2>/dev/null)"
+			bootstrap_file="$(bashunit.utils.absolutepath "$file" 2>/dev/null)"
 			if [ $? -ne 0 ]; then
 				bashunit.utils.exit_with_msg "bootstrap file '$file' does not exist!"
 			fi
@@ -54,21 +54,21 @@ done
 # show coverage
 if [ -n "${args[1]}" ]; then
 	show_list=0
-	source_dir=$(bashunit.utils.absolutepath ${args[1]})
+	source_dir="$(bashunit.utils.absolutepath "${args[1]}")"
 	if [ $? -ne 0 ]; then
 		bashunit.utils.exit_with_msg "source directory '$source_dir' does not exist!"
 	fi
 	if [ -n "${args[2]}" ]; then
 		show_list=1
 	fi
-	bashunit.test.show_coverage $source_dir ${args[0]} $show_list
+	bashunit.test.show_coverage "$source_dir" "${args[0]}" $show_list
 fi
 
-BASHUNIT_TESTS_DIR=$(bashunit.utils.absolutepath "${args[0]}")
-target=$BASHUNIT_TESTS_DIR
-if [ -f $BASHUNIT_TESTS_DIR ]; then
+BASHUNIT_TESTS_DIR="$(bashunit.utils.absolutepath "${args[0]}")"
+target="$BASHUNIT_TESTS_DIR"
+if [ -f "$BASHUNIT_TESTS_DIR" ]; then
 	target="$BASHUNIT_TESTS_DIR"
-	BASHUNIT_TESTS_DIR=$(dirname $BASHUNIT_TESTS_DIR)
+	BASHUNIT_TESTS_DIR="$(dirname "$BASHUNIT_TESTS_DIR")"
 fi
 
 # load bootstrap file

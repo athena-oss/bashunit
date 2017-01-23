@@ -76,7 +76,8 @@ function bashunit.test.run_suite()
 	local target
 	bashunit.test._save_state
 
-	target=$(bashunit.utils.absolutepath "$1" 2>/dev/null)
+	target="$(bashunit.utils.absolutepath "$1" 2>/dev/null)"
+
 	if [ $? -ne 0 ]; then
 		bashunit.utils.exit_with_msg "target '$1' does not exist!"
 	fi
@@ -93,10 +94,13 @@ function bashunit.test.run_suite()
 	bashunit.utils.dir_exists_or_fail "$target"
 	bashunit.test._start_suite
 
+	local old_ifs="$IFS"
+	IFS=$'\n'
 	for test_suite in $(find "$target" -name "test.*sh")
 	do
 		bashunit.test._run_test_case "$test_suite"
 	done
+	IFS="$old_ifs"
 
 	bashunit.test._end_suite
 	return $?

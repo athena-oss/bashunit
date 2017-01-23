@@ -235,15 +235,15 @@ function bashunit.utils.absolutepath()
 	fi
 
 	local dir
-	dir=$(dirname "$1")
-	if [ ! -d "$dir" ]; then
+	dir="$(dirname "$1")"
+	if [[ ! -d "$dir" ]]; then
 		bashunit.utils.exit_with_msg "'$dir' does not exist!"
 		return 1
 	fi
 
 	local path
-	path=$(cd "$dir" && pwd)/$(basename "$1")
-	if test ! -f "$path" && test ! -d "$path"; then
+	path="$(cd "$dir" && pwd)/$(basename "$1")"
+	if [[ ! -f "$path" ]] && [[ ! -d "$path" ]]; then
 		bashunit.utils.exit_with_msg "'$path' does not exist!"
 		return 1
 	fi
